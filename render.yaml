@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: secureapi
+    env: docker
+    region: singapore
+    plan: free
+    buildCommand: dotnet publish -c Release -o out
+    startCommand: dotnet out/SecureApi.dll
+    dockerfilePath: ./Dockerfile
