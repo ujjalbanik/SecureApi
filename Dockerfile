@@ -12,5 +12,6 @@ WORKDIR /app
 COPY --from=build /app/out .
 
 # Expose default port
-EXPOSE 8080
+EXPOSE 10000
+ENV ASPNETCORE_URLS=http://+:10000
 ENTRYPOINT ["dotnet", "SecureApi.dll"]
