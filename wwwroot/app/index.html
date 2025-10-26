@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html ng-app="secureApp">
+<head>
+  <meta charset="UTF-8">
+  <title>Secure API - AngularJS Auth</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="app.js"></script>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input { padding: 6px; margin: 4px; }
+    button { padding: 6px 10px; margin-top: 10px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body ng-controller="AuthController as ctrl">
+
+  <h2>🔐 Secure API (AngularJS + JWT)</h2>
+  <hr>
+
+  <!-- LOGIN FORM -->
+  <div ng-if="!ctrl.token && !ctrl.showRegister">
+    <h3>Login</h3>
+    <form ng-submit="ctrl.login()">
+      <input type="text" ng-model="ctrl.user.username" placeholder="Username" required><br>
+      <input type="password" ng-model="ctrl.user.password" placeholder="Password" required><br>
+      <button type="submit">Login</button>
+    </form>
+    <p style="color:red;" ng-if="ctrl.error">{{ctrl.error}}</p>
+    <p style="color:green;" ng-if="ctrl.success">{{ctrl.success}}</p>
+    <p>Don’t have an account? <a href="" ng-click="ctrl.toggleRegister()">Register here</a></p>
+  </div>
+
+  <!-- REGISTER FORM -->
+  <div ng-if="ctrl.showRegister && !ctrl.token">
+    <h3>Register</h3>
+    <form ng-submit="ctrl.register()">
+      <input type="text" ng-model="ctrl.registerUser.username" placeholder="Username" required><br>
+      <input type="password" ng-model="ctrl.registerUser.password" placeholder="Password" required><br>
+      <input type="text" ng-model="ctrl.registerUser.role" placeholder="Role (e.g. Admin or User)" required><br>
+      <button type="submit">Register</button>
+    </form>
+    <p style="color:red;" ng-if="ctrl.error">{{ctrl.error}}</p>
+    <p style="color:green;" ng-if="ctrl.success">{{ctrl.success}}</p>
+    <p>Already have an account? <a href="" ng-click="ctrl.toggleRegister()">Back to Login</a></p>
+  </div>
+
+  <!-- LOGGED-IN DASHBOARD -->
+  <div ng-if="ctrl.token">
+    <h3>Welcome, {{ctrl.loggedUser}}</h3>
+    <p><b>Role:</b> {{ctrl.userRole}}</p>
+
+    <button ng-click="ctrl.callProtected()">Access Protected Route</button>
+
+    <div ng-if="ctrl.userRole === 'Admin'">
+      <button ng-click="ctrl.adminAction()">Admin Action</button>
+    </div>
+
+    <p style="color:green;" ng-if="ctrl.protectedData"><b>Protected Response:</b> {{ctrl.protectedData}}</p>
+
+    <button ng-click="ctrl.logout()">Logout</button>
+  </div>
+
+</body>
+</html>
